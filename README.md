@@ -1,10 +1,15 @@
-# idevexia.com → www.idevexia.com
+# idevexia.com
 
-Lleva la dirección sin `www` a la página comercial, que vive en Google Sites en `www.idevexia.com`.
+Página comercial de **Ingeniería y Desarrollos EVEXIA** (Reynosa, Tamaulipas), publicada con GitHub Pages.
 
-- **Por qué aquí:** Google Sites sólo se publica en un subdominio (`www`), y la redirección que ofrece Google
-  Workspace para el dominio sin `www` no tiene https. GitHub Pages sí da https gratis.
-- **Qué hace:** `index.html` y `404.html` mandan cualquier ruta a la misma en `www` (`idevexia.com/servicios` →
-  `www.idevexia.com/servicios`). `CNAME` le dice a GitHub Pages el dominio.
-- **DNS (Neubox):** cuatro registros A de `idevexia.com.` a las IP de GitHub Pages (185.199.108.153,
-  185.199.109.153, 185.199.110.153, 185.199.111.153) y el CNAME de `www` a `ghs.googlehosted.com` (Google Sites).
+- `index.html`: inicio (servicios, energía solar, nosotros, trabajos realizados, clientes, contacto).
+- `energia-solar.html`: suministro e instalación de paneles solares.
+- `css/estilo.css`, `js/menu.js`, `img/` (fotos de obra del currículum empresarial, logo y favicon).
+- `CNAME`: el dominio. `404.html`: la página que sale si una dirección no existe.
+
+**Lo demás no vive aquí:** el correo `@idevexia.com` es de Google Workspace, EVEXIA corre en Cloud Run (botón
+«Acceso EVEXIA») y el DNS está en Neubox: cuatro registros A de `idevexia.com.` a las IP de GitHub Pages
+(185.199.108.153, 185.199.109.153, 185.199.110.153, 185.199.111.153) y el CNAME de `www` a `inglopez88.github.io`.
+
+Los textos y datos vienen del currículum empresarial de la empresa; un cambio se sube con un commit y se ve en
+uno o dos minutos.
