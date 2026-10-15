@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- La «X» del logo de Evexia: el trazo «\» claro y el «/» en el degradado azul de la marca. -->
+  <defs>
+    <linearGradient id="azul" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#3a95ff"/>
+      <stop offset="1" stop-color="#1557a8"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#2d3137"/>
+  <path d="M21 16 L43 48" stroke="#ffffff" stroke-width="7" stroke-linecap="round"/>
+  <path d="M18 50 L46 14" stroke="url(#azul)" stroke-width="8" stroke-linecap="round"/>
+</svg>

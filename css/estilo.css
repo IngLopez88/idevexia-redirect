@@ -468,6 +468,75 @@ html.menu-abierto .whatsapp-flotante, html.visor-abierto .whatsapp-flotante { op
   .visor .visor-siguiente { right: 24px; }
 }
 
+/* ===== Marca (2026-10-15, segundo paquete) =========================================================== */
+/* La diagonal de la «X» del logo: el trazo «/» en degradado azul. Se repite en la portada, las etiquetas de
+   sección y los fondos oscuros. */
+:root { --diagonal: linear-gradient(60deg, #3a95ff 0%, #1e6fc1 45%, #0b3d78 100%); }
+
+/* Las etiquetas de sección: la raya se inclina como el trazo del logo. */
+.etiqueta::before { width: 30px; height: 4px; background: var(--diagonal); transform: skewX(-38deg); border-radius: 1px; }
+
+/* La portada termina en diagonal sobre la franja de datos, con el trazo azul en el borde. */
+.datos { position: relative; }
+.datos::before, .datos::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 100%; height: 72px; pointer-events: none;
+}
+.datos::before { background: var(--pizarra); clip-path: polygon(0 100%, 100% 0, 100% 100%); }
+.datos::after { background: var(--diagonal); clip-path: polygon(0 calc(100% - 5px), 100% 0, 100% 5px, 0 100%); }
+.portada .contenedor { padding-bottom: clamp(96px, 12vw, 150px); }
+@media (max-width: 700px) { .datos::before, .datos::after { height: 38px; } }
+
+/* Los datos, como insignias: el ícono en un círculo con anillo y una raya entre una y otra. */
+.datos svg {
+  width: 48px; height: 48px; padding: 10px; border-radius: 50%;
+  background: rgba(74, 144, 217, .12); box-shadow: inset 0 0 0 2px rgba(74, 144, 217, .45);
+}
+.datos li { align-items: center; }
+@media (min-width: 901px) {
+  .datos li + li { border-left: 1px solid rgba(255, 255, 255, .09); padding-left: 24px; }
+}
+
+/* Trazos diagonales de fondo en las franjas oscuras y en la azul. */
+.solar-franja, .llamado { position: relative; overflow: hidden; isolation: isolate; }
+.solar-franja::before, .llamado::before {
+  content: ""; position: absolute; z-index: -1; top: -30%; bottom: -30%; width: 34%; right: 8%;
+  background: var(--diagonal); opacity: .09; transform: skewX(-28deg);
+}
+.solar-franja::after, .llamado::after {
+  content: ""; position: absolute; z-index: -1; top: -30%; bottom: -30%; width: 3%; right: 46%;
+  background: var(--diagonal); opacity: .16; transform: skewX(-28deg);
+}
+.llamado::before, .llamado::after { background: var(--blanco); }
+
+/* Servicios: las viñetas se abren con «Ver qué incluye». */
+.mas { margin-top: 4px; }
+.mas summary {
+  list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: .55em;
+  font-weight: 700; color: var(--azul); padding: .35em 0; user-select: none;
+}
+.mas summary::-webkit-details-marker { display: none; }
+.mas summary::after {
+  content: ""; width: .5em; height: .5em; border-right: 2.5px solid currentColor; border-bottom: 2.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg); transition: transform .3s cubic-bezier(.2, .7, .2, 1);
+}
+.mas[open] summary::after { transform: translateY(2px) rotate(-135deg); }
+.mas summary:hover { color: var(--azul-oscuro); }
+.mas .abierto, .mas[open] .cerrado { display: none; }
+.mas[open] .abierto { display: inline; }
+.mas .lista { margin-top: 10px; }
+.mas[open] .lista { animation: desplegar .4s cubic-bezier(.2, .7, .2, 1) both; }
+@keyframes desplegar { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
+/* Etiquetas de color de las obras. */
+.chip {
+  display: inline-block; margin-bottom: .7em; padding: .3em .85em; border-radius: 999px;
+  font-size: .76rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+}
+.chip-azul { background: #e2eefb; color: #17589b; }
+.chip-violeta { background: #ebe8fb; color: #4f40b8; }
+.chip-turquesa { background: #dcf3ef; color: #0b7a6d; }
+.chip-solar { background: #fff1d1; color: #8a5d00; }
+
 /* Quien pidió reducir movimiento: sin animaciones ni desplazamientos. */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
