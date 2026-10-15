@@ -71,49 +71,124 @@ p { margin: 0 0 1em; }
 
 :focus-visible { outline: 3px solid var(--azul-claro); outline-offset: 3px; }
 
-/* Encabezado */
+/* Encabezado (2026-10-15): sólido y fijo arriba; en el inicio, transparente sobre la portada hasta que se baja
+   (`.sobre-portada` → `.solido`, js/sitio.js). Sin backdrop-filter: haría del encabezado el marco del menú de
+   pantalla completa del celular. */
 .encabezado {
   position: sticky; top: 0; z-index: 50;
-  background: rgba(255, 255, 255, .97); border-bottom: 1px solid var(--linea);
-  backdrop-filter: saturate(1.4) blur(6px);
+  background: var(--blanco); border-bottom: 1px solid var(--linea);
+  transition: background-color .35s ease, box-shadow .35s ease, border-color .35s ease;
 }
-.encabezado .contenedor { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 72px; }
-.marca img { width: 168px; height: auto; }
-.menu { display: flex; align-items: center; gap: 4px; }
-.menu a {
-  color: var(--tinta); text-decoration: none; font-weight: 600; font-size: .98rem;
-  padding: .45em .75em; border-radius: 6px;
+.encabezado .contenedor { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 76px; }
+.marca { position: relative; display: block; z-index: 60; flex: none; }
+.marca img { width: 168px; height: auto; transition: opacity .35s ease; }
+.marca .logo-claro { position: absolute; inset: 0; opacity: 0; }
+.encabezado.sobre-portada { position: fixed; left: 0; right: 0; background: transparent; border-bottom-color: transparent; }
+.encabezado.sobre-portada.solido {
+  background: var(--blanco); border-bottom-color: var(--linea); box-shadow: 0 8px 28px rgba(20, 30, 45, .10);
 }
-.menu a:hover, .menu a[aria-current="page"] { color: var(--azul); background: var(--gris); }
+.encabezado.sobre-portada:not(.solido) .logo-claro, .encabezado.abierto .logo-claro { opacity: 1; }
+.encabezado.sobre-portada:not(.solido) .logo-color, .encabezado.abierto .logo-color { opacity: 0; }
+
+.menu { display: flex; align-items: center; gap: 2px; }
+.menu > a {
+  position: relative; color: var(--tinta); text-decoration: none; font-weight: 600; font-size: .98rem;
+  padding: .5em .8em; transition: color .25s ease;
+}
+/* La línea que se desliza: al pasar el mouse, en la sección en la que vas y en la página actual. */
+.menu > a:not(.boton-cotizar):not(.acceso):not(.whatsapp-menu)::after {
+  content: ""; position: absolute; left: .8em; right: .8em; bottom: .2em; height: 2px; border-radius: 2px;
+  background: var(--azul); transform: scaleX(0); transform-origin: left; transition: transform .3s cubic-bezier(.2, .7, .2, 1);
+}
+.menu > a:hover::after, .menu > a.activo::after, .menu > a[aria-current="page"]::after { transform: scaleX(1); }
+.menu > a:hover, .menu > a.activo, .menu > a[aria-current="page"] { color: var(--azul); }
+.menu .boton-cotizar {
+  margin-left: 10px; padding: .55em 1.35em; border-radius: 999px; background: var(--azul); color: var(--blanco);
+  box-shadow: 0 8px 20px rgba(30, 111, 193, .35); transition: background-color .25s, transform .25s, box-shadow .25s;
+}
+.menu .boton-cotizar:hover { background: var(--azul-oscuro); color: var(--blanco); transform: translateY(-1px); }
 .menu a.acceso {
-  margin-left: 8px; border: 2px solid var(--pizarra); color: var(--pizarra);
-  display: inline-flex; align-items: center; gap: .4em;
+  margin-left: 8px; padding: .45em 1.05em; border: 2px solid var(--pizarra); border-radius: 999px; color: var(--pizarra);
+  display: inline-flex; align-items: center; gap: .45em; transition: background-color .25s, color .25s, border-color .25s;
 }
 .menu a.acceso:hover { background: var(--pizarra); color: var(--blanco); }
 .menu a.acceso svg { width: 1em; height: 1em; }
+.menu .whatsapp-menu { display: none; }
+/* Sobre la portada oscura, en blanco. */
+.encabezado.sobre-portada:not(.solido) .menu > a:not(.boton-cotizar) { color: var(--blanco); }
+.encabezado.sobre-portada:not(.solido) .menu > a:not(.boton-cotizar)::after { background: #9cc6f2; }
+.encabezado.sobre-portada:not(.solido) .menu a.acceso { border-color: rgba(255, 255, 255, .75); }
+.encabezado.sobre-portada:not(.solido) .menu a.acceso:hover { background: var(--blanco); color: var(--pizarra); }
+
+/* El botón del celular: tres rayas que se vuelven una ✕. */
 .boton-menu {
-  display: none; background: none; border: 0; padding: 8px; cursor: pointer; color: var(--tinta);
+  display: none; position: relative; z-index: 60; width: 44px; height: 44px; padding: 0;
+  background: none; border: 0; cursor: pointer; color: var(--tinta);
 }
-.boton-menu svg { width: 28px; height: 28px; }
+.boton-menu span {
+  position: absolute; left: 10px; right: 10px; top: 21px; height: 2px; border-radius: 2px; background: currentColor;
+  transition: transform .35s cubic-bezier(.2, .7, .2, 1), opacity .2s;
+}
+.boton-menu span:nth-child(1) { transform: translateY(-7px); }
+.boton-menu span:nth-child(3) { transform: translateY(7px); }
+.encabezado.abierto .boton-menu span:nth-child(1) { transform: rotate(45deg); }
+.encabezado.abierto .boton-menu span:nth-child(2) { opacity: 0; }
+.encabezado.abierto .boton-menu span:nth-child(3) { transform: rotate(-45deg); }
+.encabezado.sobre-portada:not(.solido) .boton-menu, .encabezado.abierto .boton-menu { color: var(--blanco); }
 
 @media (max-width: 960px) {
   .boton-menu { display: block; }
+  /* El menú a pantalla completa: entra deslizándose y sus ligas aparecen una tras otra. */
   .menu {
-    position: absolute; top: 100%; left: 0; right: 0;
-    flex-direction: column; align-items: stretch; gap: 0;
-    background: var(--blanco); border-bottom: 1px solid var(--linea); box-shadow: var(--sombra);
-    padding: 8px 16px 16px; display: none;
+    position: fixed; inset: 0; z-index: 55; display: flex; flex-direction: column; align-items: stretch; gap: 0;
+    padding: 108px 28px 36px; overflow-y: auto;
+    background: linear-gradient(160deg, var(--pizarra) 0%, #1b2430 100%);
+    opacity: 0; visibility: hidden; transform: translateY(-16px);
+    transition: opacity .35s ease, transform .35s cubic-bezier(.2, .7, .2, 1), visibility 0s linear .35s;
   }
-  .encabezado.abierto .menu { display: flex; }
-  .menu a { padding: .8em .6em; border-radius: 0; border-bottom: 1px solid var(--gris); }
-  .menu a.acceso { margin: 12px 0 0; justify-content: center; border-radius: 8px; }
+  .encabezado.abierto .menu { opacity: 1; visibility: visible; transform: none; transition: opacity .35s ease, transform .35s cubic-bezier(.2, .7, .2, 1); }
+  .menu > a { color: var(--blanco); }
+  .menu > a:not(.boton-cotizar):not(.acceso):not(.whatsapp-menu) {
+    font-size: 1.45rem; padding: .55em 0; border-bottom: 1px solid rgba(255, 255, 255, .08);
+  }
+  .menu > a:not(.boton-cotizar):not(.acceso):not(.whatsapp-menu)::after { left: 0; right: auto; width: 36px; bottom: .25em; background: var(--azul-claro); }
+  .menu > a.activo, .menu > a[aria-current="page"], .menu > a:hover { color: #9cc6f2; }
+  .menu .boton-cotizar, .menu a.acceso, .menu .whatsapp-menu {
+    margin: 14px 0 0; justify-content: center; text-align: center; font-size: 1.05rem; padding: .85em 1em; border-radius: 12px; border-bottom: 0;
+  }
+  .menu .boton-cotizar { margin-top: 28px; }
+  .menu a.acceso, .encabezado.sobre-portada:not(.solido) .menu a.acceso { border-color: rgba(255, 255, 255, .5); color: var(--blanco); }
+  .menu .whatsapp-menu { display: inline-flex; align-items: center; gap: .5em; background: #1fa855; color: var(--blanco); }
+  .menu .whatsapp-menu svg { width: 1.2em; height: 1.2em; }
+  .encabezado.abierto .menu > a { animation: entrar-liga .45s cubic-bezier(.2, .7, .2, 1) both; }
+  .encabezado.abierto .menu > a:nth-child(2) { animation-delay: .04s; }
+  .encabezado.abierto .menu > a:nth-child(3) { animation-delay: .08s; }
+  .encabezado.abierto .menu > a:nth-child(4) { animation-delay: .12s; }
+  .encabezado.abierto .menu > a:nth-child(5) { animation-delay: .16s; }
+  .encabezado.abierto .menu > a:nth-child(6) { animation-delay: .20s; }
+  .encabezado.abierto .menu > a:nth-child(7) { animation-delay: .24s; }
 }
+@keyframes entrar-liga { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+html.menu-abierto, html.visor-abierto { overflow: hidden; }
 
-/* Portada */
+/* Portada: la foto se acerca despacio y el texto entra escalonado. */
 .portada {
-  position: relative; color: var(--blanco); isolation: isolate;
-  background: var(--pizarra) url("../img/subestacion.jpg") center 30% / cover no-repeat;
+  position: relative; color: var(--blanco); isolation: isolate; overflow: hidden;
+  background: var(--pizarra); padding-top: 76px;
 }
+.portada::after {
+  content: ""; position: absolute; inset: 0; z-index: -2;
+  background: url("../img/subestacion.jpg") center 30% / cover no-repeat;
+  animation: acercar 22s ease-out both;
+}
+@keyframes acercar { from { transform: scale(1.12); } to { transform: scale(1); } }
+/* En el celular, la misma foto más ligera (71 KB en lugar de 164). */
+@media (max-width: 700px) { .portada::after { background-image: url("../img/subestacion-movil.jpg"); } }
+.portada .etiqueta, .portada h1, .portada p, .portada .botones { animation: subir .9s cubic-bezier(.2, .7, .2, 1) both; }
+.portada h1 { animation-delay: .12s; }
+.portada p { animation-delay: .24s; }
+.portada .botones { animation-delay: .36s; }
+@keyframes subir { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
 .portada::before {
   content: ""; position: absolute; inset: 0; z-index: -1;
   background: linear-gradient(100deg, rgba(20, 28, 40, .92) 0%, rgba(20, 28, 40, .78) 48%, rgba(30, 111, 193, .35) 100%);
@@ -133,6 +208,7 @@ p { margin: 0 0 1em; }
 .datos svg { width: 34px; height: 34px; flex: none; color: var(--azul-claro); }
 .datos strong { display: block; font-size: 1.1rem; }
 .datos span { font-size: .92rem; color: rgba(255, 255, 255, .72); line-height: 1.4; display: block; }
+.datos [data-contar] { display: inline; font-size: inherit; color: inherit; line-height: inherit; font-variant-numeric: tabular-nums; }
 @media (max-width: 900px) { .datos ul { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 520px) { .datos ul { grid-template-columns: 1fr; } }
 
@@ -305,3 +381,97 @@ p { margin: 0 0 1em; }
 
 /* Página no encontrada */
 .no-encontrada { text-align: center; padding: 120px 0; }
+
+/* ===== Movimiento (2026-10-15) ======================================================================== */
+
+/* Aparecer al bajar: js/sitio.js marca `.revelar` sólo lo que no se ve al cargar, y `.visible` al llegar. */
+.revelar {
+  opacity: 0; transform: translateY(28px);
+  transition: opacity .75s ease, transform .75s cubic-bezier(.2, .7, .2, 1);
+  transition-delay: var(--retraso, 0ms);
+}
+.revelar.visible { opacity: 1; transform: none; }
+
+/* Tarjetas que se elevan y fotos que se acercan al pasar el mouse. */
+.servicio, .tarjeta, .pasos li { transition: transform .35s cubic-bezier(.2, .7, .2, 1), box-shadow .35s ease; }
+.servicio:hover, .tarjeta:hover, .pasos li:hover { transform: translateY(-6px); box-shadow: 0 20px 44px rgba(20, 30, 45, .16); }
+.servicio img { transition: transform .7s cubic-bezier(.2, .7, .2, 1); }
+.servicio:hover img { transform: scale(1.05); }
+.servicio h3 svg { transition: transform .35s cubic-bezier(.2, .7, .2, 1), background-color .35s; }
+.servicio:hover h3 svg { transform: rotate(-6deg) scale(1.08); background: var(--azul-oscuro); }
+.galeria li { overflow: hidden; border-radius: 6px; }
+.galeria img, .obras-pares img { cursor: zoom-in; transition: transform .6s cubic-bezier(.2, .7, .2, 1), filter .3s; }
+.galeria li:hover img { transform: scale(1.06); }
+.obras-pares img:hover { filter: brightness(1.06); }
+.boton.primario, .boton.whatsapp { box-shadow: 0 8px 20px rgba(0, 0, 0, .14); }
+.boton:hover { transform: translateY(-2px); }
+
+/* Botón flotante de WhatsApp: un círculo que late; al pasar el mouse dice qué hace. */
+.whatsapp-flotante {
+  position: fixed; right: 20px; bottom: 20px; z-index: 40;
+  display: flex; align-items: center; padding: 13px; border-radius: 999px;
+  background: #1fa855; color: var(--blanco); text-decoration: none; font-weight: 700;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, .28); transition: transform .25s, background-color .25s;
+}
+.whatsapp-flotante::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; animation: latido 2.6s ease-out infinite;
+}
+.whatsapp-flotante svg { width: 30px; height: 30px; flex: none; }
+.whatsapp-flotante span {
+  max-width: 0; overflow: hidden; white-space: nowrap;
+  transition: max-width .4s cubic-bezier(.2, .7, .2, 1), padding .4s;
+}
+.whatsapp-flotante:hover, .whatsapp-flotante:focus-visible { background: #178a45; transform: translateY(-2px); }
+.whatsapp-flotante:hover span, .whatsapp-flotante:focus-visible span { max-width: 260px; padding: 0 8px 0 10px; }
+@keyframes latido {
+  0% { box-shadow: 0 0 0 0 rgba(31, 168, 85, .55); }
+  70% { box-shadow: 0 0 0 18px rgba(31, 168, 85, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(31, 168, 85, 0); }
+}
+html.menu-abierto .whatsapp-flotante, html.visor-abierto .whatsapp-flotante { opacity: 0; pointer-events: none; }
+@media (max-width: 560px) {
+  .whatsapp-flotante { right: 14px; bottom: 14px; padding: 12px; }
+  .whatsapp-flotante svg { width: 28px; height: 28px; }
+  /* Que el botón flotante no tape la última línea de la página. */
+  .pie .contenedor.legal { padding-bottom: 96px; }
+  /* Botones que llenan el ancho: dos por renglón si caben, si no uno. */
+  .botones .boton { flex: 1 1 auto; }
+}
+
+/* Visor de fotos. */
+.visor {
+  position: fixed; inset: 0; z-index: 90; display: grid; grid-template-columns: auto 1fr auto; align-items: center;
+  gap: 12px; padding: 56px 18px 40px; background: rgba(12, 16, 22, .92);
+  opacity: 0; transition: opacity .22s ease;
+}
+.visor.abierto { opacity: 1; }
+.visor[hidden] { display: none; }
+.visor figure { margin: 0; display: grid; justify-items: center; gap: 12px; min-width: 0; }
+.visor img {
+  max-width: 100%; max-height: calc(100vh - 150px); width: auto; height: auto; border-radius: 6px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .5); transform: scale(.96); transition: transform .3s cubic-bezier(.2, .7, .2, 1);
+}
+.visor.abierto img { transform: none; }
+.visor figcaption { color: rgba(255, 255, 255, .85); font-size: .95rem; text-align: center; max-width: 60ch; }
+.visor button {
+  display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; border: 0; cursor: pointer;
+  background: rgba(255, 255, 255, .12); color: var(--blanco); font-size: 2rem; line-height: 1; transition: background-color .2s;
+}
+.visor button:hover { background: rgba(255, 255, 255, .25); }
+.visor button[hidden] { visibility: hidden; display: grid; }
+.visor .visor-cerrar { position: absolute; top: 12px; right: 14px; font-size: 1.8rem; }
+.visor-cuenta { position: absolute; top: 22px; left: 0; right: 0; margin: 0; text-align: center; color: rgba(255, 255, 255, .7); font-size: .9rem; pointer-events: none; }
+@media (max-width: 560px) {
+  .visor { grid-template-columns: 1fr; padding: 56px 10px 30px; }
+  .visor .visor-anterior, .visor .visor-siguiente { position: absolute; bottom: 18px; }
+  .visor .visor-anterior { left: 24px; }
+  .visor .visor-siguiente { right: 24px; }
+}
+
+/* Quien pidió reducir movimiento: sin animaciones ni desplazamientos. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; transition-delay: 0ms !important; }
+  .revelar { opacity: 1; transform: none; }
+  .servicio:hover, .tarjeta:hover, .pasos li:hover, .servicio:hover img, .galeria li:hover img, .boton:hover { transform: none; }
+}
