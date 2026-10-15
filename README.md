@@ -13,3 +13,7 @@ Página comercial de **Ingeniería y Desarrollos EVEXIA** (Reynosa, Tamaulipas),
 
 Los textos y datos vienen del currículum empresarial de la empresa; un cambio se sube con un commit y se ve en
 uno o dos minutos.
+
+**Al cambiar `css/estilo.css` o un archivo de `js/`, sube la versión `?v=` con que lo piden las páginas.** GitHub
+Pages deja que el navegador guarde esos archivos 10 minutos; sin versión nueva, una página nueva puede salir con el
+estilo viejo (el 2026-10-15 se vio el menú sin estilo y el ícono de WhatsApp gigante por eso).
