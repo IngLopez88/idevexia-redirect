@@ -213,19 +213,6 @@ p { margin: 0 0 1em; }
 .obras-pares img { width: 100%; border-radius: 6px; }
 @media (max-width: 560px) { .obras-pares { gap: 6px; } }
 
-/* Clientes */
-.clientes {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; list-style: none; padding: 0; margin: 0;
-}
-.clientes li {
-  background: var(--blanco); border-radius: 8px; padding: 18px 20px; box-shadow: var(--sombra);
-  font-weight: 600; color: var(--tinta); line-height: 1.35; display: flex; align-items: center; gap: 12px;
-}
-.clientes li::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--azul); flex: none; }
-.clientes small { display: block; font-weight: 400; color: var(--texto); }
-@media (max-width: 900px) { .clientes { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 560px) { .clientes { grid-template-columns: 1fr; } }
-
 /* Contacto */
 .contacto {
   position: relative; color: var(--blanco); isolation: isolate;
@@ -241,7 +228,27 @@ p { margin: 0 0 1em; }
 .medios a { color: var(--blanco); font-weight: 600; text-decoration: none; }
 .medios a:hover { text-decoration: underline; }
 .medios span { display: block; font-size: .9rem; color: rgba(255, 255, 255, .65); }
+.contacto .medios { margin-top: 28px; }
+/* Sin el formulario configurado, el texto y los medios ocupan todo el ancho. */
+.contacto .rejilla:has(> .formulario[hidden]) { grid-template-columns: 1fr; }
 @media (max-width: 860px) { .contacto .rejilla { grid-template-columns: 1fr; } }
+
+/* Formulario de contacto: tarjeta blanca sobre el fondo oscuro. */
+.formulario {
+  background: var(--blanco); color: var(--texto); border-radius: var(--radio); padding: 28px;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, .3); display: grid; gap: 14px;
+}
+.formulario[hidden] { display: none; }
+.formulario h3 { margin: 0; }
+.formulario label { display: grid; gap: 6px; font-weight: 600; color: var(--tinta); font-size: .95rem; }
+.formulario input, .formulario select, .formulario textarea {
+  font: inherit; font-weight: 400; color: var(--tinta); background: #fbfcfd;
+  padding: .6em .8em; border: 1px solid var(--linea); border-radius: 8px; width: 100%;
+}
+.formulario textarea { resize: vertical; min-height: 110px; }
+.formulario input:focus, .formulario select:focus, .formulario textarea:focus { outline: 2px solid var(--azul-claro); border-color: var(--azul); }
+.formulario button { justify-self: start; }
+.contacto .formulario .estado { margin: 0; min-height: 1.4em; color: var(--texto); font-size: .95rem; }
 
 /* Pie */
 .pie { background: var(--pizarra-2); color: rgba(255, 255, 255, .7); font-size: .92rem; }
