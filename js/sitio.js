@@ -183,6 +183,13 @@
     });
   }
 
+  // ---- Videos de fondo: quien pidió reducir movimiento ve la primera imagen, quieta --------------------------
+  if (quieto) {
+    Array.prototype.forEach.call(document.querySelectorAll("video[autoplay]"), function (v) {
+      v.removeAttribute("autoplay"); v.pause();
+    });
+  }
+
   // ---- Año del pie ------------------------------------------------------------------------------------------
   var anio = document.getElementById("anio");
   if (anio) anio.textContent = new Date().getFullYear();
