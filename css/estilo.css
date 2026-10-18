@@ -182,8 +182,8 @@ html.menu-abierto, html.visor-abierto { overflow: hidden; }
   animation: acercar 22s ease-out both;
 }
 @keyframes acercar { from { transform: scale(1.12); } to { transform: scale(1); } }
-/* En el celular, la misma foto más ligera (71 KB en lugar de 164). */
-@media (max-width: 700px) { .portada::after { background-image: url("../img/subestacion-movil.jpg"); } }
+/* En el celular la portada es alta y angosta: la foto se estira más que en la computadora, así que va la misma
+   foto grande (la versión de 760 px se veía pixeleada). */
 .portada .etiqueta, .portada h1, .portada p, .portada .botones { animation: subir .9s cubic-bezier(.2, .7, .2, 1) both; }
 .portada h1 { animation-delay: .12s; }
 .portada p { animation-delay: .24s; }
@@ -201,7 +201,7 @@ html.menu-abierto, html.visor-abierto { overflow: hidden; }
 /* Franja de datos */
 .datos { background: var(--pizarra); color: var(--blanco); }
 .datos ul {
-  list-style: none; margin: 0; padding: 28px 0;
+  list-style: none; margin: 0 auto; padding: 28px 0;
   display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
 }
 .datos li { display: flex; gap: 14px; align-items: flex-start; }
