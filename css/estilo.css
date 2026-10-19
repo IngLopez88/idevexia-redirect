@@ -177,10 +177,11 @@ html.menu-abierto, html.visor-abierto { overflow: hidden; }
   background: var(--pizarra); padding-top: 76px;
 }
 .portada::after {
-  content: ""; position: absolute; inset: 0; z-index: -2;
+  content: ""; position: absolute; inset: 0; z-index: -3;
   background: url("../img/subestacion.jpg") center 30% / cover no-repeat;
   animation: acercar 22s ease-out both;
 }
+.portada-video { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; }
 @keyframes acercar { from { transform: scale(1.12); } to { transform: scale(1); } }
 /* En el celular la portada es alta y angosta: la foto se estira más que en la computadora, así que va la misma
    foto grande (la versión de 760 px se veía pixeleada). */
