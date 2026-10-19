@@ -131,7 +131,7 @@
     var mostrar = function (i) {
       actual = (i + grupo.length) % grupo.length;
       var foto = grupo[actual];
-      img.src = foto.currentSrc || foto.src;
+      img.src = foto.getAttribute("data-grande") || foto.currentSrc || foto.src;  // la versión grande, si hay
       img.alt = foto.alt;
       pie.textContent = foto.alt;
       cuenta.textContent = grupo.length > 1 ? (actual + 1) + " / " + grupo.length : "";
