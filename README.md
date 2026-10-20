@@ -6,6 +6,7 @@ Página comercial de **Ingeniería y Desarrollos EVEXIA** (Reynosa, Tamaulipas),
 - `energia-solar.html`: suministro e instalación de paneles solares.
 - `css/estilo.css`, `js/menu.js`, `img/` (fotos de obra del currículum empresarial, logo y favicon).
 - `CNAME`: el dominio. `404.html`: la página que sale si una dirección no existe.
+- `pantalla/index.html`: la liga corta `idevexia.com/pantalla`, que manda a la pantalla de la oficina de EVEXIA (`/pantalla` en Cloud Run) para no teclear la dirección larga en el Echo Show. No sale en el menú ni en `sitemap.xml`.
 
 **Lo demás no vive aquí:** el correo `@idevexia.com` es de Google Workspace, EVEXIA corre en Cloud Run (botón
 «Acceso EVEXIA») y el DNS está en Neubox: cuatro registros A de `idevexia.com.` a las IP de GitHub Pages
